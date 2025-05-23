@@ -8,6 +8,10 @@ import Login from './pages/login'
 import Register from './pages/register'
 import Navbar from './components/navbar' 
 import Myactivity from './pages/myactivity'
+import Request from './pages/request'
+import Review from './pages/review'
+import Join from './pages/join'
+import Accountsetting from './pages/accountsetting'
 
 const router = createBrowserRouter([
   {
@@ -26,6 +30,22 @@ const router = createBrowserRouter([
       {
         path: 'volunteeractivity',
         element: <VolunteerActivity />,
+      },
+      {
+        path: 'request',
+        element: <Request />,
+      },
+      {
+        path: 'review',
+        element: <Review />,
+      },
+      {
+        path: 'join',
+        element: <Join />,
+      },
+      {
+        path: 'accountsetting',
+        element: <Accountsetting />,
       },
     ],
   },

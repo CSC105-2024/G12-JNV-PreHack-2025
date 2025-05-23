@@ -28,6 +28,12 @@ const Navbar = () => {
           >
             Volunteer Activity
           </NavLink>
+          <NavLink
+            to="/accountsetting"
+            className="font-poppins font-bold hover:opacity-80 transition"
+          >
+            Account setting
+          </NavLink>
 
           <NavLink
             to="/login"
