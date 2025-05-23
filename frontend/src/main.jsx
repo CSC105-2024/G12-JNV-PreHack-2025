@@ -9,6 +9,7 @@ import Register from './pages/register'
 import Navbar from './components/navbar' 
 import Myactivity from './pages/myactivity'
 import Join from './pages/join'
+import Review from './pages/review'
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: 'join',
         element: <Join />,
+      },
+      {
+        path: 'review',
+        element: <Review/>,
       },
       
     ],

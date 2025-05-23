@@ -46,7 +46,13 @@ const Homepage = () => {
           Recommend Volunteer Activities
         </h2>
         <div className="bg-white rounded-2xl overflow-hidden shadow-lg">
-          <img src={Tree} alt="Activity" className="w-full h-64 object-cover" />
+          <NavLink
+                to="/join"
+                className="font-poppins font-bold hover:opacity-80 transition">
+
+                   <img src={Tree} alt="Activity" className="w-full h-64 object-cover" />
+                </NavLink>
+          {/* <img src={Tree} alt="Activity" className="w-full h-64 object-cover" /> */}
           <div className="text-left p-5">
             <h3 className="text-[16px] font-bold">
               Volunteers join in reforestation
@@ -79,7 +85,7 @@ const Homepage = () => {
               className="bg-white rounded-2xl overflow-hidden shadow-lg"
             >
               <NavLink
-                to="/join"
+                to="/review"
                 className="font-poppins font-bold hover:opacity-80 transition"
               >
                 <img
