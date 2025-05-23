@@ -25,8 +25,8 @@ const Myactivity = () => {
       <img src={Tree} alt="activity" className="w-full h-[140px] object-cover" />
       <div className="p-4">
         <h2 className="text-black text-lg font-semibold font-poppins">{title}</h2>
-        <p className="text-[#196C2E] text-sm mt-2 font-poppins flex items-center">
-          <MdCalendarToday className="text-[#196C2E] text-base mr-2" />
+        <p className="text-[#196C2E] text-sm mt-2 font-poppins flex items-center font-bold">
+          <MdCalendarToday className="text-[#196C2E] text-base mr-2 " />
           {date}
         </p>
       </div>
@@ -35,7 +35,7 @@ const Myactivity = () => {
 
   return (
     <div className="bg-[#196C2E] min-h-screen px-4 sm:px-6 py-10 font-poppins flex flex-col items-center space-y-16">
-      <div className="text-white text-4xl font-bold text-center">
+      <div className="text-white text-4xl font-bold text-center ">
         My Activities
       </div>
 

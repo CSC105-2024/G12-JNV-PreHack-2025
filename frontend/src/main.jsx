@@ -8,6 +8,7 @@ import Login from './pages/login'
 import Register from './pages/register'
 import Navbar from './components/navbar' 
 import Myactivity from './pages/myactivity'
+import Join from './pages/join'
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,11 @@ const router = createBrowserRouter([
         path: 'volunteeractivity',
         element: <VolunteerActivity />,
       },
+      {
+        path: 'join',
+        element: <Join />,
+      },
+      
     ],
   },
   {
