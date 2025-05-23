@@ -1,1 +1,9 @@
-<h1>my activities page</h1>
+const Myactivity = () => {
+    return (
+        <div className="bg-[#196C2E] min-h-screen flex justify-center items-center">
+        <h1 className="text-white text-4xl font-bold">Welcome to My activity page</h1>
+      </div>
+    );
+  };
+  export default Myactivity;
+  

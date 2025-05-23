@@ -1,1 +1,6 @@
-<h1>review modal</h1>
+const ReviewModal = () => {
+    return (
+    <h1>Welcome to Review Modal</h1>
+    );
+  };
+  export default ReviewModal;
