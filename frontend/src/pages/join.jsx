@@ -5,12 +5,58 @@ const Join = () => {
   const handleJoin = () => {
     Swal.fire({
       title: "Successfully Joined!",
+<<<<<<< HEAD
       text: "Thank you for signing up for the reforestation event 🌳",
       icon: "success",
       confirmButtonText: "OK",
     });
   };
 
+=======
+      text: "Thank you for signing up for the event",
+      icon: "success",
+      confirmButtonText: "OK",
+      customClass: {
+        confirmButton:
+          "bg-[#196C2E] hover:bg-green-900 text-white font-bold py-2 px-4 rounded",
+      },
+      buttonsStyling: false,
+    });
+  };
+
+  const handleCancel = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to cancel your participation?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, cancel it",
+      cancelButtonText: "No, keep it",
+      customClass: {
+        confirmButton:
+          "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg mr-4",
+        cancelButton:
+          "bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded-lg",
+      },
+      buttonsStyling: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Cancelled",
+          text: "Your participation has been cancelled.",
+          icon: "success",
+          confirmButtonText: "OK",
+          customClass: {
+            confirmButton:
+              "bg-[#196C2E] hover:bg-green-900 text-white font-bold py-2 px-4 rounded-lg",
+          },
+          buttonsStyling: false,
+        });
+      }
+    });
+  };
+
+>>>>>>> origin/main
   return (
     <div className="font-[Poppins] min-h-screen flex justify-center items-center bg-green-800 px-4 py-10">
       <div className="bg-white rounded-2xl max-w-4xl w-full shadow-lg p-8">
@@ -77,12 +123,23 @@ const Join = () => {
         {/* Buttons */}
         <div className="flex justify-center gap-4 mt-8">
           <button
+<<<<<<< HEAD
             className="bg-green-600 hover:bg-[#196C2E] text-white py-2 px-6 rounded-full text-lg transition"
+=======
+            className="font-semibold bg-[#196C2E] hover:bg-green-900 text-white py-2 px-6 rounded-lg text-lg transition"
+>>>>>>> origin/main
             onClick={handleJoin}
           >
             Join
           </button>
+<<<<<<< HEAD
           <button className="bg-red-500 hover:bg-red-600 text-white py-2 px-6 rounded-full text-lg transition">
+=======
+          <button
+            className="font-semibold bg-red-500 hover:bg-red-600 text-white py-2 px-6 rounded-lg text-lg transition"
+            onClick={handleCancel}
+          >
+>>>>>>> origin/main
             Cancel
           </button>
         </div>

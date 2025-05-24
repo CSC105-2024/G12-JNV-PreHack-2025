@@ -79,7 +79,11 @@ const Review = () => {
         {/* Buttons */}
         <div className="flex justify-center gap-4 mt-8">
           <button
+<<<<<<< HEAD
             className="bg-green-600 hover:bg-[#196C2E] text-white py-2 px-6 rounded-full text-lg transition"
+=======
+            className="bg-[#196C2E] hover:bg-green-900 text-white py-2 px-6 rounded-lg text-lg transition font-semibold"
+>>>>>>> origin/main
             onClick={() => setOpenModal(true)}
           >
             Review
@@ -113,3 +117,7 @@ const Review = () => {
 };
 
 export default Review;
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/main

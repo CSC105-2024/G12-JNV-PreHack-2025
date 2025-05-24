@@ -8,16 +8,28 @@ import Login from './pages/login'
 import Register from './pages/register'
 import Navbar from './components/navbar' 
 import Myactivity from './pages/myactivity'
+<<<<<<< HEAD
 import Join from './pages/join'
 import Review from './pages/review'
+=======
+import Request from './pages/request'
+import Review from './pages/review'
+import Join from './pages/join'
+import Accountsetting from './pages/accountsetting'
+>>>>>>> origin/main
 
 const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Login />,
+
+  },
   {
     path: '/',
     element: <Navbar />,
     children: [
       {
-        index: true, 
+        path: 'homepage', 
         element: <Homepage />,
       },
       {
@@ -30,14 +42,31 @@ const router = createBrowserRouter([
         element: <VolunteerActivity />,
       },
       {
+<<<<<<< HEAD
+=======
+        path: 'request',
+        element: <Request />,
+      },
+      {
+        path: 'review',
+        element: <Review />,
+      },
+      {
+>>>>>>> origin/main
         path: 'join',
         element: <Join />,
       },
       {
+<<<<<<< HEAD
         path: 'review',
         element: <Review/>,
       },
       
+=======
+        path: 'accountsetting',
+        element: <Accountsetting />,
+      },
+>>>>>>> origin/main
     ],
   },
   {

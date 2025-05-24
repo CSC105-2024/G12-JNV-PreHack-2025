@@ -2,7 +2,15 @@
 @tailwind utilities;
 @import "@fontsource/poppins";
 
+
+
 .font-poppins {
   font-family: "Poppins", sans-serif;
 }
+.emoji {
+    font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', 'Noto Emoji', sans-serif;
+  }
+  
+
+
 

@@ -45,6 +45,7 @@ const Homepage = () => {
         <h2 className="text-white text-[28px] font-extrabold text-left mb-4">
           Recommend Volunteer Activities
         </h2>
+<<<<<<< HEAD
         <div className="bg-white rounded-2xl overflow-hidden shadow-lg">
           <NavLink
                 to="/join"
@@ -53,6 +54,15 @@ const Homepage = () => {
                    <img src={Tree} alt="Activity" className="w-full h-64 object-cover" />
                 </NavLink>
           {/* <img src={Tree} alt="Activity" className="w-full h-64 object-cover" /> */}
+=======
+        <div className="bg-white rounded-2xl overflow-hidden shadow-lg transition-transform duration-300 transform hover:-translate-y-1 hover:scale-105 hover:shadow-2xl">
+          <NavLink
+            to="/join"
+            className="font-poppins font-bold hover:opacity-80 transition"
+          >
+            <img src={Tree} alt="Activity" className="w-full h-64 object-cover" />
+          </NavLink>
+>>>>>>> origin/main
           <div className="text-left p-5">
             <h3 className="text-[16px] font-bold">
               Volunteers join in reforestation
@@ -63,9 +73,12 @@ const Homepage = () => {
               and providing knowledge about nature conservation to create a
               sustainable ecosystem for future generations.
             </p>
+<<<<<<< HEAD
             <p className="text-[12px] text-right text-[#196C2E] font-semibold mt-2 cursor-pointer">
               view more detail
             </p>
+=======
+>>>>>>> origin/main
           </div>
         </div>
       </section>
@@ -76,13 +89,20 @@ const Homepage = () => {
           <h2 className="text-white text-[32px] font-extrabold">
             Past activities
           </h2>
+<<<<<<< HEAD
           <button className="text-white text-[20px]">⟳</button>
+=======
+>>>>>>> origin/main
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {activities.map((activity, index) => (
             <div
               key={index}
+<<<<<<< HEAD
               className="bg-white rounded-2xl overflow-hidden shadow-lg"
+=======
+              className="bg-white rounded-2xl overflow-hidden shadow-lg transition-transform duration-300 transform hover:-translate-y-1 hover:scale-105 hover:shadow-2xl"
+>>>>>>> origin/main
             >
               <NavLink
                 to="/review"
