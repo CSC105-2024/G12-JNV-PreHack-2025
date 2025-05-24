@@ -16,10 +16,15 @@ import Accountsetting from './pages/accountsetting'
 const router = createBrowserRouter([
   {
     path: '/',
+    element: <Login />,
+
+  },
+  {
+    path: '/',
     element: <Navbar />,
     children: [
       {
-        index: true, 
+        path: 'homepage', 
         element: <Homepage />,
       },
       {

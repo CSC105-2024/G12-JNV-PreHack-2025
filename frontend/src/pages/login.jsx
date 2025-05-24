@@ -21,14 +21,18 @@ const Login = () => {
     <div className="flex items-center justify-center min-h-screen bg-white px-4">
       <div className="w-full max-w-md bg-white shadow-lg rounded-lg border border-gray-300 p-8">
         {/* Logo */}
-        <div className="flex justify-center mb-4">
-          <img src={logo} alt="Logo" className="h-60 w-auto object-contain" />
+        <div className="flex justify-center">
+          <img
+            src={logo}
+            alt="Logo"
+            className="h-60 w-auto object-contain"
+          />
         </div>
 
         <div className="text-2xl font-bold font-poppins text-[#196C2E] text-center mb-3">
           Login to your Account
         </div>
-        <div className="text-sm font-poppins text-[#196C2E] text-center mb-6">
+        <div className="text-sm font-poppins text-[#196C2E] text-center mb-3">
           Small power creates a better tomorrow
         </div>
 
@@ -42,7 +46,13 @@ const Login = () => {
             <input
               type="text"
               placeholder="Sorasit@mail.com"
-              {...register("email", { required: "Email is required" })}
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: "Invalid email address",
+                },
+              })}
               className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#196C2E] placeholder-gray-300"
             />
             {errors.email && (
@@ -58,7 +68,13 @@ const Login = () => {
             <input
               type="password"
               placeholder="********"
-              {...register("password", { required: "Password is required" })}
+              {...register("password", {
+                required: "Password is required",
+                minLength: {
+                  value: 8,
+                  message: "Password must be at least 8 characters",
+                },
+              })}
               className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#196C2E] placeholder-gray-300"
             />
             {errors.password && (
@@ -81,7 +97,7 @@ const Login = () => {
           {/* Login Button */}
           <button
             type="submit"
-            className="w-full bg-[#196C2E] text-white py-2 rounded-lg hover:opacity-90 transition"
+            className="w-full bg-[#196C2E] text-white py-2 rounded-lg hover:bg-green-900 transition"
           >
             <div className="font-bold font-poppins text-center">Login</div>
           </button>
