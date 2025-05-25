@@ -6,3 +6,60 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id             String      @id @default(uuid())
+  firstname      String
+  lastname       String
+  email          String      @unique
+  password       String
+  gender         String
+  participations Participation[]
+  reviews        Review[]
+  requests       Request[]   // <--- ความสัมพันธ์ 1-N: user มี request ได้หลายอัน
+  createdAt      DateTime    @default(now())
+}
+
+model Activity {
+  id             String      @id @default(uuid())
+  title          String
+  description    String
+  date           DateTime
+  location       String
+  participations Participation[]
+  reviews        Review[]
+  createdAt      DateTime    @default(now())
+}
+
+model Participation {
+  id         String   @id @default(uuid())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  activity   Activity @relation(fields: [activityId], references: [id])
+  activityId String
+  status     String
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, activityId])
+}
+
+model Review {
+  id         String   @id @default(uuid())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  activity   Activity @relation(fields: [activityId], references: [id])
+  activityId String
+  rating     Int
+  comment    String
+  createdAt  DateTime @default(now())
+}
+
+model Request {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  status      String   // เช่น "pending", "approved", "declined"
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id]) // <--- N-1: แต่ละ request ต้องมี user
+  userId      String
+}
