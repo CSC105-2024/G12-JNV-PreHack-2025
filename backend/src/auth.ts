@@ -1,7 +1,6 @@
 import type { Context, Next } from 'hono';
 import { verifyToken } from './jwt.ts';
 
-// ฟังก์ชันดึงค่า cookie จาก header
 function getCookie(ctx: Context, name: string): string | undefined {
   const cookieHeader = ctx.req.header('Cookie');
   if (!cookieHeader) return undefined;
@@ -11,17 +10,23 @@ function getCookie(ctx: Context, name: string): string | undefined {
 }
 
 export default async function auth(ctx: Context, next: Next) {
-  // อ่าน token จาก cookie ด้วยฟังก์ชันข้างบน
   const token = getCookie(ctx, 'token');
 
   if (!token) {
-    return ctx.json({ message: 'Unauthorized' }, 401);
+    return ctx.json({ message: 'Unauthorized: No token provided' }, 401);
   }
 
   try {
     const user = verifyToken(token);
-    ctx.set('user', user); // เก็บข้อมูล user ไว้ใน context
-    await next();
+
+    if (typeof user === 'object' && user && 'id' in user) {
+      ctx.set('userId', user.id);
+      ctx.set('user', user);
+      await next();
+    } else {
+      return ctx.json({ message: 'Invalid token payload' }, 401);
+    }
+
   } catch {
     return ctx.json({ message: 'Invalid token' }, 401);
   }

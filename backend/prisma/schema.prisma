@@ -7,42 +7,46 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// =================== USER ===================
 model User {
-  id             String      @id @default(uuid())
+  id             String           @id @default(uuid())
   firstname      String
   lastname       String
-  email          String      @unique
+  email          String           @unique
   password       String
   gender         String
   participations Participation[]
   reviews        Review[]
-  requests       Request[]   // <--- ความสัมพันธ์ 1-N: user มี request ได้หลายอัน
-  createdAt      DateTime    @default(now())
+  requests       Request[]
+  createdAt      DateTime         @default(now())
 }
 
+// =================== ACTIVITY ===================
 model Activity {
-  id             String      @id @default(uuid())
+  id             String           @id @default(uuid())
   title          String
   description    String
   date           DateTime
   location       String
   participations Participation[]
   reviews        Review[]
-  createdAt      DateTime    @default(now())
+  createdAt      DateTime         @default(now())
 }
 
+// ================ PARTICIPATION ================
 model Participation {
   id         String   @id @default(uuid())
   user       User     @relation(fields: [userId], references: [id])
   userId     String
   activity   Activity @relation(fields: [activityId], references: [id])
   activityId String
-  status     String
+  status     String   // เช่น "joined", "cancelled"
   createdAt  DateTime @default(now())
 
   @@unique([userId, activityId])
 }
 
+// ==================== REVIEW ====================
 model Review {
   id         String   @id @default(uuid())
   user       User     @relation(fields: [userId], references: [id])
@@ -54,12 +58,13 @@ model Review {
   createdAt  DateTime @default(now())
 }
 
+// ==================== REQUEST ====================
 model Request {
   id          String   @id @default(uuid())
   title       String
   description String
-  status      String   // เช่น "pending", "approved", "declined"
+  status      String   @default("pending")   // pending/approved/declined
   createdAt   DateTime @default(now())
-  user        User     @relation(fields: [userId], references: [id]) // <--- N-1: แต่ละ request ต้องมี user
+  user        User     @relation(fields: [userId], references: [id])
   userId      String
 }

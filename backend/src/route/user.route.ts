@@ -1,7 +1,11 @@
-// src/routes/user.route.ts
 import { Hono } from 'hono';
 import auth from '../auth.ts';
-import { registerUser, loginUser, getAccountSetting, updateAccountSetting } from '../controller/user.controller.ts';
+import {
+  registerUser,
+  loginUser,
+  getAccountSetting,
+  updateAccountSetting,
+} from '../controller/user.controller.ts';
 
 const router = new Hono();
 
