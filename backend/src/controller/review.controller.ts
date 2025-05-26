@@ -44,7 +44,7 @@ export async function createReview(ctx: Context) {
 
   const { activityId, rating, comment } = await ctx.req.json();
 
-  if (!activityId || typeof activityId !== 'string' || activityId.length !== 36 || !rating) {
+  if (!activityId || typeof activityId !== 'string' || activityId.length !== 36 || typeof rating !== 'number') {
     return ctx.json({ message: 'activityId (UUID) and rating are required' }, 400);
   }
 
@@ -58,6 +58,37 @@ export async function createReview(ctx: Context) {
   });
 
   return ctx.json(newReview, 201);
+}
+
+// แก้ไขรีวิว (เฉพาะเจ้าของรีวิวเท่านั้น)
+export async function updateReview(ctx: Context) {
+  const userPayload = ctx.get('user') as { id: string };
+  const reviewId = parseId(ctx.req.param('id'));
+
+  if (reviewId === null) {
+    return ctx.json({ message: 'Review id is required and must be UUID string' }, 400);
+  }
+
+  const review = await prismaReview.findUnique({ where: { id: reviewId } });
+  if (!review) {
+    return ctx.json({ message: 'Review not found' }, 404);
+  }
+
+  if (review.userId !== userPayload.id) {
+    return ctx.json({ message: 'Forbidden' }, 403);
+  }
+
+  const { rating, comment } = await ctx.req.json();
+
+  const updatedReview = await prismaReview.update({
+    where: { id: reviewId },
+    data: {
+      rating: typeof rating === 'number' ? rating : review.rating,
+      comment: typeof comment === 'string' ? comment : review.comment,
+    },
+  });
+
+  return ctx.json(updatedReview);
 }
 
 // ลบรีวิวตาม id (เจ้าของรีวิวเท่านั้น)
@@ -75,7 +106,6 @@ export async function deleteReview(ctx: Context) {
   }
 
   if (review.userId !== userPayload.id) {
-    // หากมีระบบ admin ให้เช็คสิทธิ์ที่นี่เพิ่มเติมได้
     return ctx.json({ message: 'Forbidden' }, 403);
   }
 
