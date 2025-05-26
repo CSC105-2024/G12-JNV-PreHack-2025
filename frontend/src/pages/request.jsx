@@ -1,8 +1,36 @@
-import { useState } from "react";
-import RequestPopup from "../components/requestmodal"; 
+import { useEffect, useState } from "react";
+import RequestPopup from "../components/requestmodal";
+import { getAllRequests, createRequest } from "../api/userApi";
 
 const Request = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      setLoading(true);
+      try {
+        const res = await getAllRequests();
+        setRequests(res.data);
+      } catch (e) {
+        setRequests([]);
+      }
+      setLoading(false);
+    }
+    fetchData();
+  }, []);
+
+  const handleRequestSubmit = async (formData) => {
+    try {
+      await createRequest(formData);
+      const res = await getAllRequests();
+      setRequests(res.data);
+      setIsOpen(false);
+    } catch (e) {
+      alert(e.response?.data?.message || "Failed to create request");
+    }
+  };
 
   return (
     <div className="bg-[#196C2E] min-h-screen flex justify-center items-center px-4 font-poppins relative">
@@ -21,19 +49,23 @@ const Request = () => {
               </tr>
             </thead>
             <tbody className="text-[#606060]">
-              {[
-                ['Auaidiaaui', 'Volunteer A', 'Deciding'],
-                ['Auaidiaaui', 'Volunteer B', 'Approve'],
-                ['Auaidiaaui', 'Volunteer C', 'Approve'],
-                ['Auaidiaaui', 'Volunteer D', 'Deciding'],
-                ['Auaidiaaui', 'Volunteer F', 'Deciding'],
-              ].map(([title, desc, status], i) => (
-                <tr key={i} className="border-b border-gray-200">
-                  <td className="px-6 py-3">{title}</td>
-                  <td className="px-6 py-3">{desc}</td>
-                  <td className="px-6 py-3 font-medium">{status}</td>
+              {loading ? (
+                <tr>
+                  <td className="px-6 py-6" colSpan={3}>Loading...</td>
                 </tr>
-              ))}
+              ) : requests.length === 0 ? (
+                <tr>
+                  <td className="px-6 py-6" colSpan={3}>No requests found.</td>
+                </tr>
+              ) : (
+                requests.map((req, i) => (
+                  <tr key={req.id} className="border-b border-gray-200">
+                    <td className="px-6 py-3">{req.title}</td>
+                    <td className="px-6 py-3">{req.description}</td>
+                    <td className="px-6 py-3 font-medium capitalize">{req.status}</td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
@@ -48,7 +80,12 @@ const Request = () => {
         </div>
       </div>
 
-      {isOpen && <RequestPopup onClose={() => setIsOpen(false)} />}
+      {isOpen && (
+        <RequestPopup
+          onClose={() => setIsOpen(false)}
+          onSubmit={handleRequestSubmit}
+        />
+      )}
     </div>
   );
 };

@@ -1,39 +1,19 @@
+import { useEffect, useState } from "react";
 import Tree from "../images/Tree.jpg";
 import { NavLink } from "react-router-dom";
+import { getActivities } from "../api/userApi"; // ฟังก์ชันที่เชื่อม backend
 
 const Homepage = () => {
-  const activities = [
-    {
-      title: "Sweep in Temple",
-      description:
-        "Green space restoration activities by planting trees in degraded areas, promoting cooperation between …",
-    },
-    {
-      title: "Garbage collection",
-      description:
-        "Join us in picking up trash in public areas such as parks, beaches and community areas to help reduce …",
-    },
-    {
-      title: "Health check",
-      description:
-        "Provide basic health screening services such as blood pressure measurement, blood sugar level test, and health …",
-    },
-    {
-      title: "Community Clean-up",
-      description:
-        "Help us clean public spaces and parks to maintain a clean and healthy environment for everyone.",
-    },
-    {
-      title: "Tree Planting Day",
-      description:
-        "Join the community in planting new trees to restore greenery and improve air quality.",
-    },
-    {
-      title: "Recycling Workshop",
-      description:
-        "Teach locals how to properly recycle materials and reduce household waste effectively.",
-    },
-  ];
+  const [activities, setActivities] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // ดึงข้อมูลกิจกรรมจาก backend
+    getActivities()
+      .then((res) => setActivities(res.data))
+      .catch(() => setActivities([]))
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
     <div
@@ -46,10 +26,7 @@ const Homepage = () => {
           Recommend Volunteer Activities
         </h2>
         <div className="bg-white rounded-2xl overflow-hidden shadow-lg transition-transform duration-300 transform hover:-translate-y-1 hover:scale-105 hover:shadow-2xl">
-          <NavLink
-            to="/join"
-            className="font-poppins font-bold hover:opacity-80 transition"
-          >
+          <NavLink to="/join" className="font-poppins font-bold hover:opacity-80 transition">
             <img src={Tree} alt="Activity" className="w-full h-64 object-cover" />
           </NavLink>
           <div className="text-left p-5">
@@ -57,10 +34,7 @@ const Homepage = () => {
               Volunteers join in reforestation
             </h3>
             <p className="text-[14px] text-[#333333] mt-2">
-              Green space restoration activities by planting trees in degraded
-              areas, promoting cooperation between communities and volunteers,
-              and providing knowledge about nature conservation to create a
-              sustainable ecosystem for future generations.
+              Green space restoration activities by planting trees in degraded areas, promoting cooperation between communities and volunteers, and providing knowledge about nature conservation to create a sustainable ecosystem for future generations.
             </p>
           </div>
         </div>
@@ -69,36 +43,37 @@ const Homepage = () => {
       {/* Past Activities */}
       <section className="w-full max-w-5xl mt-10">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-white text-[32px] font-extrabold">
-            Past activities
-          </h2>
+          <h2 className="text-white text-[32px] font-extrabold">Past activities</h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {activities.map((activity, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-2xl overflow-hidden shadow-lg transition-transform duration-300 transform hover:-translate-y-1 hover:scale-105 hover:shadow-2xl"
-            >
-              <NavLink
-                to="/review"
-                className="font-poppins font-bold hover:opacity-80 transition"
+        {loading ? (
+          <div className="text-white text-xl py-10">Loading...</div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {activities.map((activity) => (
+              <div
+                key={activity.id}
+                className="bg-white rounded-2xl overflow-hidden shadow-lg transition-transform duration-300 transform hover:-translate-y-1 hover:scale-105 hover:shadow-2xl"
               >
-                <img
-                  src={Tree}
-                  alt={activity.title}
-                  className="w-full h-48 object-cover"
-                />
-              </NavLink>
-
-              <div className="text-left p-4">
-                <h3 className="text-[14px] font-bold">{activity.title}</h3>
-                <p className="text-[12px] text-[#333333] mt-1">
-                  {activity.description}
-                </p>
+                <NavLink
+                  to={`/review/${activity.id}`} // ส่ง id ไปหน้ารีวิวแบบ dynamic
+                  className="font-poppins font-bold hover:opacity-80 transition"
+                >
+                  <img
+                    src={Tree}
+                    alt={activity.title}
+                    className="w-full h-48 object-cover"
+                  />
+                </NavLink>
+                <div className="text-left p-4">
+                  <h3 className="text-[14px] font-bold">{activity.title}</h3>
+                  <p className="text-[12px] text-[#333333] mt-1">
+                    {activity.description}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );

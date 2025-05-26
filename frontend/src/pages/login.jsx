@@ -1,20 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import logo from "../images/logo.png";
+import { login } from "../api/userApi"; // <-- ฟังก์ชันเรียก API
 
 const Login = () => {
   const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const [loading, setLoading] = useState(false);
 
-  const onSubmit = (data) => {
-    if (Object.keys(errors).length > 0) return;
-    console.log("✅ Logged in Data:", data);
-    navigate("/homepage");
+  const onSubmit = async (data) => {
+    setLoading(true);
+    try {
+      await login({ email: data.email, password: data.password }); // เรียก API
+      navigate("/homepage");
+    } catch (err) {
+      window.alert(err.response?.data?.message || "Login failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -22,11 +26,7 @@ const Login = () => {
       <div className="w-full max-w-md bg-white shadow-lg rounded-lg border border-gray-300 p-8">
         {/* Logo */}
         <div className="flex justify-center">
-          <img
-            src={logo}
-            alt="Logo"
-            className="h-60 w-auto object-contain"
-          />
+          <img src={logo} alt="Logo" className="h-60 w-auto object-contain" />
         </div>
 
         <div className="text-2xl font-bold font-poppins text-[#196C2E] text-center mb-3">
@@ -97,9 +97,10 @@ const Login = () => {
           {/* Login Button */}
           <button
             type="submit"
-            className="w-full bg-[#196C2E] text-white py-2 rounded-lg hover:bg-green-900 transition"
+            disabled={loading}
+            className={`w-full bg-[#196C2E] text-white py-2 rounded-lg hover:bg-green-900 transition font-bold font-poppins text-center ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
           >
-            <div className="font-bold font-poppins text-center">Login</div>
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 
