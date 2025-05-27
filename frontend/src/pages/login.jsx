@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import logo from "../images/logo.png";
-import { login } from "../api/userApi"; // <-- ฟังก์ชันเรียก API
+import { login } from "../api/userApi"; // API เรียก backend
 
 const Login = () => {
   const navigate = useNavigate();
@@ -12,9 +12,20 @@ const Login = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      await login({ email: data.email, password: data.password }); // เรียก API
-      navigate("/homepage");
+      const res = await login({ email: data.email, password: data.password });
+
+      const user = res.data?.user;
+      const token = res.data?.token;
+
+      if (user?.id && token) {
+        localStorage.setItem("userId", user.id);       // ✅ เก็บ user ID
+        localStorage.setItem("token", token);          // ✅ เก็บ token สำหรับส่งใน header
+        navigate("/homepage");                         // ✅ ไปหน้า homepage
+      } else {
+        window.alert("Login succeeded but missing user ID or token.");
+      }
     } catch (err) {
+      console.error("🔴 Login error:", err);
       window.alert(err.response?.data?.message || "Login failed. Please try again.");
     } finally {
       setLoading(false);
@@ -36,13 +47,11 @@ const Login = () => {
           Small power creates a better tomorrow
         </div>
 
-        {/* Form */}
+        {/* Login Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {/* Email */}
+          {/* Email Field */}
           <div>
-            <label className="font-poppins font-semibold text-gray-400 text-sm">
-              Email
-            </label>
+            <label className="font-poppins font-semibold text-gray-400 text-sm">Email</label>
             <input
               type="text"
               placeholder="Sorasit@mail.com"
@@ -55,16 +64,12 @@ const Login = () => {
               })}
               className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#196C2E] placeholder-gray-300"
             />
-            {errors.email && (
-              <p className="text-red-500 text-sm">{errors.email.message}</p>
-            )}
+            {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
           </div>
 
-          {/* Password */}
+          {/* Password Field */}
           <div>
-            <label className="font-poppins font-semibold text-gray-400 text-sm">
-              Password
-            </label>
+            <label className="font-poppins font-semibold text-gray-400 text-sm">Password</label>
             <input
               type="password"
               placeholder="********"
@@ -77,24 +82,16 @@ const Login = () => {
               })}
               className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#196C2E] placeholder-gray-300"
             />
-            {errors.password && (
-              <p className="text-red-500 text-sm">{errors.password.message}</p>
-            )}
+            {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
           </div>
 
           {/* Remember Me */}
           <div className="flex items-center">
-            <input
-              type="checkbox"
-              {...register("rememberMe")}
-              className="mr-2"
-            />
-            <label className="font-poppins text-gray-600 text-sm">
-              Remember Me
-            </label>
+            <input type="checkbox" {...register("rememberMe")} className="mr-2" />
+            <label className="font-poppins text-gray-600 text-sm">Remember Me</label>
           </div>
 
-          {/* Login Button */}
+          {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}
@@ -107,10 +104,7 @@ const Login = () => {
         {/* Register Link */}
         <p className="text-center mt-4 text-gray-600">
           Not Registered Yet?{" "}
-          <Link
-            to="/register"
-            className="text-[#196C2E] font-semibold underline"
-          >
+          <Link to="/register" className="text-[#196C2E] font-semibold underline">
             Create an account
           </Link>
         </p>

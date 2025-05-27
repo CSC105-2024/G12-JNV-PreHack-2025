@@ -51,12 +51,24 @@ export async function loginUser(ctx: Context) {
   }
 
   const token = signToken({ id: user.id, email: user.email });
-  return ctx.json({ message: 'Login successful', token });
+
+  // ✅ แก้ตรงนี้ เพิ่มข้อมูลผู้ใช้ให้ frontend ใช้งาน
+  return ctx.json({
+    message: 'Login successful',
+    token,
+    user: {
+      id: user.id,
+      email: user.email,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      gender: user.gender
+    }
+  });
 }
 
 export async function getAccountSetting(ctx: Context) {
-  // ดึง user จาก token
   const userPayload = ctx.get('user') as { id: string };
+
   const user = await prismaUser.findUnique({
     where: { id: userPayload.id },
     select: {
@@ -79,7 +91,6 @@ export async function updateAccountSetting(ctx: Context) {
   const userPayload = ctx.get('user') as { id: string };
   const { firstname, lastname, email, password, gender } = await ctx.req.json();
 
-  // อัปเดตข้อมูลส่วนตัว (ถ้ามี)
   const data: any = {
     firstname,
     lastname,

@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import Tree from "../images/Tree.jpg";
 import ReviewModal from "../components/reviewmodal";
 import { getReviews, createReview } from "../api/userApi";
 
-const activityId = "b99c34d7-61b7-409e-88c7-cc580e68f08c"; // ใส่ id จริง
-
 const Review = () => {
+  const { id: activityId } = useParams(); // ✅ รับ activityId จาก URL
   const [openModal, setOpenModal] = useState(false);
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // โหลดคอมเมนต์รีวิวจาก backend
   const fetchReviews = async () => {
+    if (!activityId) return;
     setLoading(true);
     try {
       const res = await getReviews(activityId);
@@ -25,7 +26,7 @@ const Review = () => {
   useEffect(() => {
     fetchReviews();
     // eslint-disable-next-line
-  }, []);
+  }, [activityId]);
 
   // ส่งรีวิวใหม่ (user ต้อง login)
   const handleSubmitReview = async (formData) => {
@@ -41,7 +42,7 @@ const Review = () => {
   return (
     <div className="font-[Poppins] min-h-screen flex justify-center items-center bg-green-800 px-4 py-10 relative">
       <div className="bg-white rounded-2xl max-w-4xl w-full shadow-lg p-8">
-        {/* ...ข้อมูลกิจกรรม... */}
+        {/* ...ข้อมูลกิจกรรม เช่นชื่อ, วันที่, คำอธิบาย... */}
         <div className="flex justify-center gap-4 mt-8">
           <button
             className="bg-[#196C2E] hover:bg-green-900 text-white py-2 px-6 rounded-lg text-lg transition font-semibold"

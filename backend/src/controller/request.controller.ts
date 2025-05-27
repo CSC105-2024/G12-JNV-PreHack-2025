@@ -1,5 +1,5 @@
-import type { Context } from 'hono';
-import { prisma } from '../prismaClient.ts';
+import type { Context } from 'hono'
+import prisma from '../prismaClient.ts' // ✅ default import, ไม่มี .ts
 
 // ดึง request ทั้งหมด (option: filter by user ได้)
 export const getAllRequests = async (c: Context) => {
@@ -41,7 +41,7 @@ export const createRequest = async (c: Context) => {
   }
 };
 
-// อัพเดตสถานะ request
+// อัปเดตสถานะ request
 export const updateRequestStatus = async (c: Context) => {
   try {
     const id = c.req.param('id');

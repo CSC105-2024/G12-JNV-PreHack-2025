@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Tree from "../images/Tree.jpg";
 import { NavLink } from "react-router-dom";
-import { getActivities } from "../api/userApi"; // ฟังก์ชันที่เชื่อม backend
+import { getActivities } from "../api/userApi.ts"; // ฟังก์ชันที่เชื่อม backend
 
 const Homepage = () => {
   const [activities, setActivities] = useState([]);

@@ -1,8 +1,17 @@
-import axios from 'axios'; // <--- ต้องเป็น 'axios' ไม่ใช่ 'axiosInstance.ts'
+import axios from 'axios';
 
 const api = axios.create({
   baseURL: 'http://localhost:3000',
-  withCredentials: true, // สำคัญสำหรับ cookie
+  withCredentials: false, // ปิดเพราะเราใช้ token ผ่าน header
+});
+
+// ✅ เพิ่ม interceptor ที่แนบ token อัตโนมัติ
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 export default api;

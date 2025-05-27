@@ -7,6 +7,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum ParticipationStatus {
+  joined
+  cancelled
+}
+
+enum RequestStatus {
+  pending
+  approved
+  declined
+}
+
 // =================== USER ===================
 model User {
   id             String           @id @default(uuid())
@@ -35,13 +46,13 @@ model Activity {
 
 // ================ PARTICIPATION ================
 model Participation {
-  id         String   @id @default(uuid())
-  user       User     @relation(fields: [userId], references: [id])
+  id         String              @id @default(uuid())
+  user       User                @relation(fields: [userId], references: [id])
   userId     String
-  activity   Activity @relation(fields: [activityId], references: [id])
+  activity   Activity            @relation(fields: [activityId], references: [id])
   activityId String
-  status     String   // เช่น "joined", "cancelled"
-  createdAt  DateTime @default(now())
+  status     ParticipationStatus
+  createdAt  DateTime            @default(now())
 
   @@unique([userId, activityId])
 }
@@ -60,11 +71,11 @@ model Review {
 
 // ==================== REQUEST ====================
 model Request {
-  id          String   @id @default(uuid())
+  id          String        @id @default(uuid())
   title       String
   description String
-  status      String   @default("pending")   // pending/approved/declined
-  createdAt   DateTime @default(now())
-  user        User     @relation(fields: [userId], references: [id])
+  status      RequestStatus @default(pending)
+  createdAt   DateTime      @default(now())
+  user        User          @relation(fields: [userId], references: [id])
   userId      String
 }

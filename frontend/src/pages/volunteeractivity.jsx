@@ -11,13 +11,12 @@ const VolunteerActivity = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
 
-  // โหลดข้อมูลกิจกรรมจาก backend
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
       try {
         const res = await getActivities();
-        setActivities(res.data); // array จาก backend
+        setActivities(res.data);
       } catch {
         setActivities([]);
       }
@@ -27,7 +26,6 @@ const VolunteerActivity = () => {
   }, []);
 
   const totalPages = Math.ceil(activities.length / ITEMS_PER_PAGE);
-
   const handleClick = (page) => setCurrentPage(page);
 
   const displayedActivities = activities.slice(
@@ -38,13 +36,11 @@ const VolunteerActivity = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-900 via-green-800 to-green-700 px-4 py-14 font-poppins text-white">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-3">Volunteer Activities</h1>
           <p className="text-sm">Join hands, spread smiles, and make a better 🌏</p>
         </div>
 
-        {/* Top Navigation */}
         <div className="flex flex-col md:flex-row flex-wrap items-center justify-between gap-4 mb-10">
           <input
             type="text"
@@ -64,39 +60,43 @@ const VolunteerActivity = () => {
           </NavLink>
         </div>
 
-        {/* Cards */}
         <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-10">
           {loading && <div className="text-white">Loading...</div>}
-          {!loading && displayedActivities.map((activity, index) => (
-            <div
-              key={activity.id || index}
-              className="relative bg-white rounded-3xl border border-green-200 p-6 flex gap-5 hover:scale-[1.03] transition-transform duration-300 text-black shadow-lg"
-            >
-              <div className="w-20 h-20 rounded-xl overflow-hidden bg-green-200 flex items-center justify-center shadow-inner border border-green-400">
-                <img
-                  src={Tree}
-                  alt="Activity icon"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-xl font-bold text-green-800 mb-1">{activity.title}</h3>
-                <p className="text-sm text-gray-700 mb-3">{activity.description}</p>
-                <div className="text-[#196C2E] font-medium text-sm flex items-center gap-2 mb-2">
-                  <FaCalendarAlt /> {new Date(activity.date).toLocaleDateString()}
+          {!loading &&
+            displayedActivities.map((activity, index) => (
+              <div
+                key={activity.id || index}
+                className="relative bg-white rounded-3xl border border-green-200 p-6 flex gap-5 hover:scale-[1.03] transition-transform duration-300 text-black shadow-lg"
+              >
+                <div className="w-20 h-20 rounded-xl overflow-hidden bg-green-200 flex items-center justify-center shadow-inner border border-green-400">
+                  <img src={Tree} alt="Activity icon" className="w-full h-full object-cover" />
                 </div>
-                <NavLink
-                  to="/join"
-                  className="text-right block font-bold text-green-800"
-                >
-                  View detail &gt;&gt;&gt;
-                </NavLink>
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-green-800 mb-1">{activity.title}</h3>
+                  <p className="text-sm text-gray-700 mb-3">{activity.description}</p>
+                  <div className="text-[#196C2E] font-medium text-sm flex items-center gap-2 mb-2">
+                    <FaCalendarAlt /> {new Date(activity.date).toLocaleDateString()}
+                  </div>
+
+                  {/* ✅ แก้ตรงนี้ให้มี Join + Review */}
+                  <NavLink
+                    to={`/join/${activity.id}`}
+                    className="text-right block font-bold text-green-800"
+                  >
+                    View detail &gt;&gt;&gt;
+                  </NavLink>
+
+                  <NavLink
+                    to={`/review/${activity.id}`}
+                    className="text-right block font-semibold text-blue-700 underline text-sm mt-1"
+                  >
+                    Review this activity
+                  </NavLink>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
 
-        {/* Pagination */}
         <div className="flex justify-center items-center gap-2 mt-12">
           <button
             onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}

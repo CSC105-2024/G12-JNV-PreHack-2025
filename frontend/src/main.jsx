@@ -17,20 +17,18 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <Login />,
-
   },
   {
     path: '/',
     element: <Navbar />,
     children: [
       {
-        path: 'homepage', 
+        path: 'homepage',
         element: <Homepage />,
       },
       {
         path: 'myactivity',
         element: <Myactivity />,
-
       },
       {
         path: 'volunteeractivity',
@@ -41,11 +39,11 @@ const router = createBrowserRouter([
         element: <Request />,
       },
       {
-        path: 'review',
+        path: 'review/:id', // ✅ เปลี่ยนตรงนี้ให้รับ activityId
         element: <Review />,
       },
       {
-        path: 'join',
+        path: 'join/:id',
         element: <Join />,
       },
       {
@@ -67,5 +65,5 @@ const router = createBrowserRouter([
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <RouterProvider router={router} />
-  </StrictMode>,
+  </StrictMode>
 )
